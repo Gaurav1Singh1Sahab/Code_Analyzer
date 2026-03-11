@@ -4,6 +4,8 @@ from app.db.database import engine, Base
 
 import app.db.models
 
+from app.api.auth import router as auth_router
+
 app = FastAPI(
     title=settings.APP_NAME,
     version="1.0"
@@ -14,6 +16,9 @@ app = FastAPI(
 # print(engine.url)
 
 Base.metadata.create_all(bind=engine)
+
+app.include_router(auth_router)
+
 
 @app.get("/")
 def root():
