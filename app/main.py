@@ -1,5 +1,7 @@
 from fastapi import FastAPI
 from app.core.config import settings
+from app.db.database import engine
+
 
 
 app = FastAPI(
@@ -8,6 +10,10 @@ app = FastAPI(
     version="1.0.0",
     
 )
+
+
+print(engine)
+
 
 @app.get("/")
 def root():
