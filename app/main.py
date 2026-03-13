@@ -2,23 +2,27 @@ from fastapi import FastAPI
 from app.core.config import settings
 from app.db.database import engine, Base
 
+# load models
 import app.db.models
 
+# import routers
 from app.api.auth import router as auth_router
+
 
 app = FastAPI(
     title=settings.APP_NAME,
     version="1.0"
 )
 
-# print(Base.metadata.tables)
-
-# print(engine.url)
-
+# create database tables
 Base.metadata.create_all(bind=engine)
 
-app.include_router(auth_router)
-
+# include auth routes
+app.include_router(
+    auth_router,
+    prefix="/auth",
+    tags=["Authentication"]
+)
 
 @app.get("/")
 def root():
