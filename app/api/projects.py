@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, UploadFile, File, HTTPException, Form
+from fastapi import APIRouter, Depends, UploadFile, File, HTTPException, Form, BackgroundTasks
 from sqlalchemy.orm import Session
 
 from app.db.database import get_db
@@ -6,6 +6,8 @@ from app.db.models import Project, User
 from app.schemas.project_schema import ProjectCreate
 from app.core.dependencies import get_current_user
 from app.core.config import settings
+
+from app.services.analyzer import run_analysis
 
 import os
 import shutil
@@ -150,3 +152,28 @@ def add_repository(
             "project_id": project_id,
             "file_name": code_file.filename
         }
+
+
+@router.post("/projects/{project_id}/analyze")
+def start_analysis(
+    project_id: int,
+    background_tasks: BackgroundTasks,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+
+    project = db.query(Project).filter(Project.id == project_id).first()
+
+    if not project:
+        raise HTTPException(
+            status_code=404,
+            detail="Project not found"
+        )
+
+    background_tasks.add_task(run_analysis, project_id)
+
+    return {
+        "message": "Analysis started",
+        "project_id": project_id,
+        "status": "processing"
+    }
