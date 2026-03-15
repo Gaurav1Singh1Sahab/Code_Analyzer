@@ -7,6 +7,8 @@ load_dotenv()
 class Settings:
     APP_NAME: str = os.getenv("APP_NAME", "Code Analyzer")
 
+    OPENAI_API_KEY: str = os.getenv("OPENAI_API_KEY")
+
     SECRET_KEY: str = os.getenv("SECRET_KEY", "supersecretkey")
 
     ALGORITHM: str = os.getenv("ALGORITHM", "HS256")
