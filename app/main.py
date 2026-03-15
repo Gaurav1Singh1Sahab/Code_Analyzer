@@ -10,6 +10,8 @@ from app.api.auth import router as auth_router
 
 from app.api.projects import router as project_router
 
+from app.api.search import router as search_router
+
 
 app = FastAPI(
     title=settings.APP_NAME,
@@ -35,4 +37,11 @@ app.include_router(
     project_router,
     prefix="/api",
     tags=["Projects"]
+)
+
+
+app.include_router(
+    search_router,
+    prefix="/api",
+    tags=["Search"]
 )

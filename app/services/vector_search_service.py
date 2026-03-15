@@ -3,12 +3,12 @@ from sqlalchemy import text
 from app.db.code_embeddings import CodeEmbedding
 
 
-def search_similar_code(query_embedding, db: Session, limit: int = 5):
+def search_similar_code(query_embedding, db, limit=5):
 
     sql = text("""
-    SELECT content, file_path
+    SELECT code_chunk, file_path
     FROM code_embeddings
-    ORDER BY embedding <=> :embedding
+    ORDER BY embedding <=> CAST(:embedding AS vector)
     LIMIT :limit
     """)
 
