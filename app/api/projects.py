@@ -29,6 +29,7 @@ def create_project(
     new_project = Project(
         name=project.name,
         description=project.description,
+        github_url=project.github_url,
         owner_id=current_user.id
     )
 
@@ -170,7 +171,18 @@ def start_analysis(
             detail="Project not found"
         )
 
-    background_tasks.add_task(run_analysis, project_id)
+    # IMPORTANT validation
+    if not project.github_url:
+        raise HTTPException(
+            status_code=400,
+            detail="GitHub repository URL not provided for this project"
+        )
+
+    background_tasks.add_task(
+        run_analysis,
+        project_id,
+        project.github_url
+    )
 
     return {
         "message": "Analysis started",

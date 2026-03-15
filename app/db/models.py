@@ -2,6 +2,8 @@ from sqlalchemy import Column, Integer, String, DateTime
 from sqlalchemy.sql import func
 from app.db.database import Base
 
+from app.db.code_embeddings import CodeEmbedding
+
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship
 
@@ -26,6 +28,8 @@ class Project(Base):
     name = Column(String, nullable=False)
 
     description = Column(String, nullable=True)
+
+    github_url = Column(String, nullable=True)
 
     owner_id = Column(Integer, ForeignKey("users.id"))
 
