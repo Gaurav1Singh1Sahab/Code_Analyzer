@@ -18,4 +18,4 @@ class CodeEmbedding(Base):
 
     code_chunk = Column(String)
 
-    embedding = Column(Vector(768))
+    embedding = Column(Vector(384))
