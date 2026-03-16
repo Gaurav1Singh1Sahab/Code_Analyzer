@@ -12,6 +12,8 @@ from app.api.projects import router as project_router
 
 from app.api.search import router as search_router
 
+from app.api.analysis import router as analysis_router
+
 
 app = FastAPI(
     title=settings.APP_NAME,
@@ -44,4 +46,10 @@ app.include_router(
     search_router,
     prefix="/api",
     tags=["Search"]
+)
+
+app.include_router(
+    analysis_router,
+    prefix="/api",
+    tags=["Agent Analysis"]
 )
