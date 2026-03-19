@@ -8,6 +8,10 @@ class SDEDocumentationAgent(BaseAgent):
 
     def run(self, state: dict) -> dict:
 
+        if "sde" not in state["enabled_agents"]:
+            print("SDEDocumentationAgent: skipped")
+            return state
+
         print("SDEDocumentationAgent: generating technical documentation")
 
         client = OpenAI()

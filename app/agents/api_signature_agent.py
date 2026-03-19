@@ -18,6 +18,10 @@ class APISignatureAgent(BaseAgent):
 
     def run(self, state: dict) -> dict:
 
+        if "api" not in state["enabled_agents"]:
+            print("APISignatureAgent: skipped")
+            return state
+
         project_path = state["project_path"]
 
         print("APISignatureAgent: scanning for API endpoints")

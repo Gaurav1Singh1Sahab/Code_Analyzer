@@ -8,6 +8,12 @@ class PMDocumentationAgent(BaseAgent):
 
     def run(self, state: dict) -> dict:
 
+        def run(self, state: dict) -> dict:
+
+            if "pm" not in state["enabled_agents"]:
+                print("PMDocumentationAgent: skipped")
+                return state
+
         print("PMDocumentationAgent: generating product summary")
 
         client = OpenAI()

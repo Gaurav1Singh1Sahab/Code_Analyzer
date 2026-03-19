@@ -25,6 +25,10 @@ class SecurityAgent(BaseAgent):
 
     def run(self, state: dict) -> dict:
 
+        if "security" not in state["enabled_agents"]:
+            print("SecurityAgent: skipped")
+            return state
+
         project_path = state["project_path"]
 
         print("SecurityAgent: scanning for security issues")

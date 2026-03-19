@@ -8,6 +8,10 @@ class RepoStructureAgent(BaseAgent):
 
     def run(self, state: dict) -> dict:
 
+        if "structure" not in state["enabled_agents"]:
+            print("RepoStructureAgent: skipped")
+            return state
+            
         project_path = state["project_path"]
 
         print(f"RepoStructureAgent: analyzing project structure at {project_path}")

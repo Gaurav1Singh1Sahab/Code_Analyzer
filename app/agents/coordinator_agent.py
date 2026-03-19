@@ -9,14 +9,22 @@ class CoordinatorAgent(BaseAgent):
 
         print("Coordinator: Starting analysis")
 
-        # Validate configuration
-        if "analysis_depth" not in state:
-            state["analysis_depth"] = "standard"
+        # defaults
+        state.setdefault("analysis_depth", "standard")
+        state.setdefault("verbosity", "medium")
 
-        if "verbosity" not in state:
-            state["verbosity"] = "medium"
+        # 🔥 default enabled agents
+        state.setdefault("enabled_agents", [
+            "structure",
+            "api",
+            "security",
+            "best_practices",
+            "sde",
+            "pm"
+        ])
 
-        print(f"Analysis depth: {state['analysis_depth']}")
-        print(f"Verbosity level: {state['verbosity']}")
+        print(f"Depth: {state['analysis_depth']}")
+        print(f"Verbosity: {state['verbosity']}")
+        print(f"Enabled Agents: {state['enabled_agents']}")
 
         return state

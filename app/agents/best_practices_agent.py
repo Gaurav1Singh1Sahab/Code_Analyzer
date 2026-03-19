@@ -24,6 +24,10 @@ class BestPracticesAgent(BaseAgent):
 
     def run(self, state: dict) -> dict:
 
+        if "best_practices" not in state["enabled_agents"]:
+            print("BestPracticesAgent: skipped")
+            return state
+
         print("BestPracticesAgent: researching framework best practices")
 
         best_practices = []

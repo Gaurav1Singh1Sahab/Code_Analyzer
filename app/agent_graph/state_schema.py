@@ -7,6 +7,11 @@ class AgentState(TypedDict):
     project_id: int
     project_path: str
 
+    # 🔥 NEW CONFIG
+    analysis_depth: str          # quick | standard | deep
+    verbosity: str              # low | medium | high
+    enabled_agents: List[str]   # which agents to run
+
     # analysis configuration
     analysis_depth: str
     verbosity: str
