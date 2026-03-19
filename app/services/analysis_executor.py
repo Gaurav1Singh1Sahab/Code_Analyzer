@@ -1,3 +1,6 @@
+
+from app.services.state_service import update_analysis_state, get_analysis_state
+from app.db.database import SessionLocal
 import time
 
 from app.agents.repo_structure_agent import RepoStructureAgent
@@ -43,18 +46,43 @@ def run_next_step(state: dict):
 
 
 
-def run_analysis(state: dict):
+def run_analysis(analysis_id: int):
 
-    print("Starting step-based analysis...")
+    db = SessionLocal()
 
-    while state.get("status") == "running":
+    print(f"Starting analysis for ID: {analysis_id}")
 
-        state = run_next_step(state)
+    while True:
 
-        # simulate step delay (important for testing pause later)
-        time.sleep(2)
+        # 🔥 always fetch latest state from DB
+        db_state = get_analysis_state(db, analysis_id)
 
-        if state.get("status") == "completed":
+        if not db_state:
+            print("Analysis state not found")
             break
 
-    return state
+        state = db_state.state_data
+
+        # ✅ Stop if paused
+        if db_state.status == "paused":
+            print("Analysis paused")
+            break
+
+        # ✅ Stop if completed
+        if db_state.status == "completed":
+            print("Analysis already completed")
+            break
+
+        # 👉 run next step
+        state = run_next_step(state)
+
+        # ✅ update status if finished
+        if state.get("status") == "completed":
+            db_state.status = "completed"
+
+        # 🔥 save state after each step
+        update_analysis_state(db, analysis_id, state)
+
+        time.sleep(2)
+
+    db.close()
